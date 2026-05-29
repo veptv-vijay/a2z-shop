@@ -86,11 +86,11 @@ export default function CartPage() {
     setPlacing(false)
   }
 
-  if (loading) return <div className="min-h-screen bg-white"><AdminNavbar /><div className="text-center py-20 text-gray-500">Loading cart...</div></div>
+  if (loading) return <div className="min-h-screen bg-white"><Navbar /><div className="text-center py-20 text-gray-500">Loading cart...</div></div>
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AdminNavbar />
+      <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Link href="/products" className="flex items-center gap-1 text-green-600 hover:underline mb-4 text-sm">
           <ArrowLeft size={16} /> Continue Shopping
