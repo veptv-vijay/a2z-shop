@@ -51,7 +51,7 @@ export default function CreateProductPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <AdminNavbar />
       <div className="max-w-3xl mx-auto px-4 py-6">
         <div className="flex items-center gap-3 mb-6">
           <Link href="/admin/products" className="text-green-600 hover:underline flex items-center gap-1 text-sm"><ArrowLeft size={16} /> Products</Link>
