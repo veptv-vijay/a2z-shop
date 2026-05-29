@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import AdminNavbar from '@/components/AdminNavbar'
-import { ArrowLeft, Package } from 'lucide-react'
+import { Package } from 'lucide-react'
 
 const STATUSES = ['pending', 'confirmed', 'dispatched', 'delivered', 'cancelled']
 
@@ -15,15 +15,13 @@ export default function AdminOrdersPage() {
   const [trackingInputs, setTrackingInputs] = useState<any>({})
   const router = useRouter()
 
-  useEffect(() => {
-    checkAdmin()
-  }, [])
+  useEffect(() => { checkAdmin() }, [])
 
   const checkAdmin = async () => {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) { router.push('/auth/login'); return }
+    if (!user) { router.push('/admin/login'); return }
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-    if (profile?.role !== 'admin') { router.push('/'); return }
+    if (profile?.role !== 'admin') { router.push('/admin/login'); return }
     fetchOrders()
   }
 
@@ -49,20 +47,18 @@ export default function AdminOrdersPage() {
   const filtered = filter === 'all' ? orders : orders.filter(o => o.status === filter)
 
   if (loading) return <div className="min-h-screen bg-white"><AdminNavbar /><div className="text-center py-20">Loading...</div></div>
+
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminNavbar />
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Link href="/admin" className="text-green-600 hover:underline flex items-center gap-1 text-sm"><ArrowLeft size={16} /> Admin</Link>
-          <h1 className="text-2xl font-bold text-gray-800">Orders ({orders.length})</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Orders ({orders.length})</h1>
 
         <div className="flex gap-2 mb-6 flex-wrap">
           {['all', ...STATUSES].map(s => (
             <button key={s} onClick={() => setFilter(s)}
               className={`px-4 py-1.5 rounded-full text-sm font-semibold transition ${filter === s ? 'bg-green-600 text-white' : 'bg-white border border-gray-300 text-gray-600 hover:border-green-400'}`}>
-              {s.charAt(0).toUpperCase() + s.slice(1)} {s === 'all' ? `(${orders.length})` : `(${orders.filter(o => o.status === s).length})`}
+              {s.charAt(0).toUpperCase() + s.slice(1)} ({s === 'all' ? orders.length : orders.filter(o => o.status === s).length})
             </button>
           ))}
         </div>
@@ -102,30 +98,18 @@ export default function AdminOrdersPage() {
                 <div className="flex flex-wrap gap-4 items-center border-t border-gray-100 pt-4">
                   <div className="flex items-center gap-2">
                     <label className="text-sm font-semibold text-gray-700">Status:</label>
-                    <select
-                      value={order.status}
-                      onChange={(e) => updateStatus(order.id, e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-green-500"
-                    >
+                    <select value={order.status} onChange={(e) => updateStatus(order.id, e.target.value)}
+                      className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-green-500">
                       {STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                     </select>
                   </div>
-
                   <div className="flex items-center gap-2 flex-1">
                     <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Tracking No:</label>
-                    <input
-                      type="text"
-                      placeholder={order.tracking_number || "Enter courier tracking number"}
+                    <input type="text" placeholder={order.tracking_number || "Enter courier tracking number"}
                       defaultValue={order.tracking_number || ''}
                       onChange={(e) => setTrackingInputs({ ...trackingInputs, [order.id]: e.target.value })}
-                      className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-green-500 min-w-0"
-                    />
-                    <button
-                      onClick={() => updateTracking(order.id)}
-                      className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-green-700 whitespace-nowrap"
-                    >
-                      Save
-                    </button>
+                      className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-green-500 min-w-0" />
+                    <button onClick={() => updateTracking(order.id)} className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-green-700 whitespace-nowrap">Save</button>
                   </div>
                 </div>
               </div>

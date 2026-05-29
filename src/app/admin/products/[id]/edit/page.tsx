@@ -15,15 +15,13 @@ export default function EditProductPage() {
   const router = useRouter()
   const params = useParams()
 
-  useEffect(() => {
-    checkAdminAndLoad()
-  }, [])
+  useEffect(() => { checkAdminAndLoad() }, [])
 
   const checkAdminAndLoad = async () => {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) { router.push('/auth/login'); return }
+    if (!user) { router.push('/admin/login'); return }
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-    if (profile?.role !== 'admin') { router.push('/'); return }
+    if (profile?.role !== 'admin') { router.push('/admin/login'); return }
     const { data } = await supabase.from('products').select('*').eq('id', params.id).single()
     if (data) setForm(data)
   }
@@ -40,20 +38,18 @@ export default function EditProductPage() {
     router.push('/admin/products')
   }
 
-  if (!form) return <div className="min-h-screen bg-white"><Navbar /><div className="text-center py-20">Loading...</div></div>
+  if (!form) return <div className="min-h-screen bg-white"><AdminNavbar /><div className="text-center py-20">Loading...</div></div>
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <AdminNavbar />
       <div className="max-w-3xl mx-auto px-4 py-6">
         <div className="flex items-center gap-3 mb-6">
           <Link href="/admin/products" className="text-green-600 hover:underline flex items-center gap-1 text-sm"><ArrowLeft size={16} /> Products</Link>
           <h1 className="text-2xl font-bold text-gray-800">Edit Product</h1>
         </div>
-
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-200 p-6 space-y-5">
           {error && <div className="bg-red-50 border border-red-300 text-red-600 rounded-lg px-4 py-3 text-sm">{error}</div>}
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-gray-700 mb-1">Product Name *</label>
@@ -99,9 +95,7 @@ export default function EditProductPage() {
               <label className="block text-sm font-semibold text-gray-700 mb-1">Image URL</label>
               <input type="url" value={form.image_url || ''} onChange={e => setForm({ ...form, image_url: e.target.value })}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 outline-none focus:border-green-500 text-sm" />
-              {form.image_url && (
-                <img src={form.image_url} alt="Preview" className="mt-2 h-24 w-24 object-cover rounded-lg border" onError={e => (e.currentTarget.style.display = 'none')} />
-              )}
+              {form.image_url && <img src={form.image_url} alt="Preview" className="mt-2 h-24 w-24 object-cover rounded-lg border" onError={e => (e.currentTarget.style.display = 'none')} />}
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
@@ -109,11 +103,9 @@ export default function EditProductPage() {
                 rows={4} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 outline-none focus:border-green-500 text-sm resize-none" />
             </div>
           </div>
-
           <div className="flex gap-3 pt-2">
             <Link href="/admin/products" className="flex-1 text-center border border-gray-300 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-50">Cancel</Link>
-            <button type="submit" disabled={loading}
-              className="flex-1 bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition disabled:opacity-50 flex items-center justify-center gap-2">
+            <button type="submit" disabled={loading} className="flex-1 bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition disabled:opacity-50 flex items-center justify-center gap-2">
               <Save size={16} /> {loading ? 'Saving...' : 'Update Product'}
             </button>
           </div>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import AdminNavbar from '@/components/AdminNavbar'
-import { Package, ShoppingBag, Users, IndianRupee, Plus, TrendingUp } from 'lucide-react'
+import { Package, ShoppingBag, Users, IndianRupee, Plus } from 'lucide-react'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({ products: 0, orders: 0, users: 0, revenue: 0 })
@@ -18,9 +18,9 @@ export default function AdminDashboard() {
 
   const checkAdmin = async () => {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) { router.push('/auth/login'); return }
+    if (!user) { router.push('/admin/login'); return }
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-    if (profile?.role !== 'admin') { router.push('/'); return }
+    if (profile?.role !== 'admin') { router.push('/admin/login'); return }
     fetchStats()
   }
 

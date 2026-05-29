@@ -28,11 +28,11 @@ export default function DashboardPage() {
     setLoading(false)
   }
 
-  if (loading) return <div className="min-h-screen bg-white"><Navbar /><div className="text-center py-20">Loading...</div></div>
+  if (loading) return <div className="min-h-screen bg-white"><AdminNavbar /><div className="text-center py-20">Loading...</div></div>
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <AdminNavbar />
       <div className="max-w-4xl mx-auto px-4 py-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">My Account</h1>
 

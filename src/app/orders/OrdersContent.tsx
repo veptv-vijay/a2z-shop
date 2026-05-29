@@ -33,11 +33,11 @@ export default function OrdersContent() {
     setLoading(false)
   }
 
-  if (loading) return <div className="min-h-screen bg-white"><Navbar /><div className="text-center py-20">Loading...</div></div>
+  if (loading) return <div className="min-h-screen bg-white"><AdminNavbar /><div className="text-center py-20">Loading...</div></div>
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <AdminNavbar />
       <div className="max-w-4xl mx-auto px-4 py-6">
         {success && (
           <div className="bg-green-50 border border-green-300 rounded-xl p-4 mb-6 flex items-center gap-3">

@@ -58,7 +58,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      <AdminNavbar />
 
       {/* Hero Banner */}
       <section className="bg-gradient-to-r from-green-700 to-green-500 text-white py-16 px-6">
