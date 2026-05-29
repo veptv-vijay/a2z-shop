@@ -7,20 +7,15 @@ import { ShoppingCart, User, Search, Menu, X, Package } from 'lucide-react'
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null)
-  const [profile, setProfile] = useState<any>(null)
   const [cartCount, setCartCount] = useState(0)
   const [search, setSearch] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    supabase.auth.getUser().then(async ({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
-      if (user) {
-        fetchCartCount(user.id)
-        const { data: p } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-        setProfile(p)
-      }
+      if (user) fetchCartCount(user.id)
     })
   }, [])
 
@@ -37,7 +32,6 @@ export default function Navbar() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     setUser(null)
-    setProfile(null)
     router.push('/')
   }
 
@@ -77,11 +71,6 @@ export default function Navbar() {
                 <Link href="/dashboard" className="flex items-center gap-1 text-gray-700 hover:text-green-600 font-medium text-sm">
                   <User size={18} /> Account
                 </Link>
-                {profile?.role === 'admin' && (
-                  <Link href="/admin" className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-green-700">
-                    Admin
-                  </Link>
-                )}
                 <button onClick={handleLogout} className="border border-green-600 text-green-600 px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-green-50">
                   Logout
                 </button>
@@ -123,9 +112,6 @@ export default function Navbar() {
                 <Link href="/cart" className="text-gray-700 font-medium py-1">Cart ({cartCount})</Link>
                 <Link href="/orders" className="text-gray-700 font-medium py-1">My Orders</Link>
                 <Link href="/dashboard" className="text-gray-700 font-medium py-1">Account</Link>
-                {profile?.role === 'admin' && (
-                  <Link href="/admin" className="text-green-600 font-semibold py-1">Admin Panel</Link>
-                )}
                 <button onClick={handleLogout} className="text-left text-red-500 font-medium py-1">Logout</button>
               </>
             ) : (
