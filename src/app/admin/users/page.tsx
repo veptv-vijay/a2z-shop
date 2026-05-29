@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import AdminNavbar from '@/components/AdminNavbar'
 import { ArrowLeft, Users } from 'lucide-react'
-
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)

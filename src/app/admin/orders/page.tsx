@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import Navbar from '@/components/Navbar'
+import AdminNavbar from '@/components/AdminNavbar'
 import { ArrowLeft, Package } from 'lucide-react'
 
 const STATUSES = ['pending', 'confirmed', 'dispatched', 'delivered', 'cancelled']
