@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import Navbar from '@/components/Navbar'
+import AdminNavbar from '@/components/AdminNavbar'
 import { ArrowLeft, Save } from 'lucide-react'
 
 const CATEGORIES = ['Electronics', 'Fashion', 'Home', 'Books', 'Sports', 'Beauty', 'Toys', 'Grocery', 'Other']
