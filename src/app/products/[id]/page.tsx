@@ -92,7 +92,7 @@ export default function ProductDetailPage() {
                 </>
               )}
             </div>
-            {savings > 0 && <p className="text-green-600 text-sm mt-1">You save ₹{savings}!</p>}
+            {Number(savings) > 0 && <p className="text-green-600 text-sm mt-1">You save ₹{savings}!</p>}
 
             <p className="text-gray-600 mt-4 leading-relaxed">{product.description}</p>
 
