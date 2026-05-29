@@ -48,8 +48,7 @@ export default function AdminOrdersPage() {
 
   const filtered = filter === 'all' ? orders : orders.filter(o => o.status === filter)
 
-  if (loading) return <div className="min-h-screen bg-white"><Navbar /><div className="text-center py-20">Loading...</div></div>
-
+  if (loading) return <div className="min-h-screen bg-white"><AdminNavbar /><div className="text-center py-20">Loading...</div></div>
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
